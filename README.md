@@ -61,12 +61,36 @@ To maintain a clean codebase for deployment, all experimental and training noteb
  ┣ 📜 requirements.txt          # Minimal Python dependencies for inference
  ┗ 📜 README.md                 # Project Documentation
 
-🧠 Model Hosting
+## 🧠 Model Hosting
 The final, fully fine-tuned acoustic model weights are approximately 2.7 GB. Due to GitHub's file size limits, these weights are not stored in this repository.
 
 Instead, we have made the model publicly accessible and permanently hosted on the Hugging Face Hub. Our deployment script, app.py, is pre-configured to automatically pull and cache these exact model weights from Hugging Face during its first run using the Hugging Face pipeline function.
 
-🔗 Click here to view, download, or test the Model on Hugging Face
+🔗 [Click here to view, download, or test the Model on Hugging Face](https://huggingface.co/rudrakalariya/Gujarati-ASR)
+
+### Downloading the Model Manually
+If you prefer to download the model weights manually from Hugging Face, follow these steps:
+
+**Method 1: Using Hugging Face CLI (Recommended)**
+1. Install the Hugging Face Hub CLI:
+   ```bash
+   pip install -U "huggingface_hub[cli]"
+   ```
+2. Download the model to a local directory (e.g., `model/`):
+   ```bash
+   huggingface-cli download https://huggingface.co/rudrakalariya/Gujarati-ASR --local-dir model/
+   ```
+
+**Method 2: Using Git LFS**
+1. Ensure you have Git Large File Storage (LFS) installed:
+   ```bash
+   git lfs install
+   ```
+2. Clone the model repository directly:
+   ```bash
+   git clone https://huggingface.co/https://huggingface.co/rudrakalariya/Gujarati-ASR
+   ```
+
 
 💻 How to Run / Installation
 You can easily get this ASR pipeline up and running locally to test audio files or speak directly through your microphone.
