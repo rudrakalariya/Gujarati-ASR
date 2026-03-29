@@ -8,102 +8,154 @@
 
 </div>
 
-## 📖 Abstract / Introduction
-Welcome to the Custom Two-Stage Automatic Speech Recognition (ASR) Pipeline exclusively fine-tuned for the **Gujarati language**. 
+---
 
-Transcribing Gujarati presents unique challenges, including handling complex phonetic overlapping, messy Unicode rendering, and disconnected language matras. This project solves these challenges using a powerful hybrid architecture:
-1. **Acoustic Base:** A Whisper-Small model fine-tuned on the *Kathbath dataset* to recognize domain-specific Gujarati speech.
-2. **Linguistic Post-Processing:** Integration of the Smruti API / IndicNLP for grammar correction and robust text normalization.
+## 📖 Introduction
+This project is a **Custom Two-Stage Automatic Speech Recognition (ASR) Pipeline** designed specifically for the **Gujarati language**.
 
-Whether you're dealing with noisy environments or complex sentence structures, this pipeline produces highly accurate transcriptions while ensuring text is grammatically structured and uniformly represented.
+Gujarati ASR is challenging due to:
+- Complex phonetics
+- Unicode inconsistencies
+- Matra (vowel sign) attachment issues
+
+This pipeline solves these problems using:
+1. 🎧 **Fine-tuned Whisper Model** (Acoustic Understanding)
+2. 🧹 **IndicNLP Normalization** (Text Cleaning & Structuring)
 
 ---
 
 ## 🏗️ Architecture
-Our pipeline systematically processes audio and text across two distinct stages:
 
-### Stage 1: The Acoustic Model
-Built upon Hugging Face's `pipeline`, our architecture inherently leverages smart pre-processing features:
-* **Auto-16kHz Resampling:** The system intelligently forces any incoming microphone/uploaded audio to 16kHz, completely preventing the notorious "alien noise" transcription distortion.
-* **30-Second Chunking with Overlap:** Solves major memory bottlenecks. We cut long audio inputs into safe 30s chunks with a 5-second overlapping stride, guaranteeing that words are never split awkwardly during transcription transitions.
+### 🔹 Stage 1: Acoustic Model
+- Whisper-based ASR (fine-tuned)
+- Auto 16kHz audio resampling
+- Chunking (30s with overlap)
+- Handles long audio efficiently
 
-### Stage 2: The Gujarati Text Gate (Post-Processing)
-Once the raw transcribed text is generated, it passes through our linguistic normalization gateway. By integrating IndicNLP rules, the system repairs messy Unicode sequences effectively, ensuring all dependent characters/matras attach properly to their base consonants.
-
----
-
-## 🚀 Results & Performance
-Our two-stage approach prominently enhances the overall transcription quality. Below are the definitive Word Error Rates (WER):
-
-| Model Stage / Configuration | Word Error Rate (WER) |
-| :--- | :---: |
-| **Baseline** *(Direct Whisper-Small Model)* | `36.0%` |
-| **Stage 1 & 2 Fine-Tuned Model** *(Domain Adaptation on Kathbath Dataset)* | `27.0%` |
-| **Final Hybrid Pipeline** *(Model + Linguistic Post-Processing)* | **`16.0%`** 🎉 |
+### 🔹 Stage 2: Gujarati Text Normalization
+- Uses Indic NLP
+- Fixes Unicode issues
+- Corrects matra placement
+- Produces clean Gujarati text
 
 ---
 
-## 📂 Directory Structure
+## 🚀 Performance
 
-To maintain a clean codebase for deployment, all experimental and training notebooks are located in a dedicated `notebooks/` folder.
+| Model Stage | WER |
+|------------|-----|
+| Baseline Whisper | 36% |
+| Fine-tuned Model | 27% |
+| Final Pipeline | **16% 🎉** |
+
+---
+
+## 📂 Project Structure
 
 ```text
 📦 Gujarati-ASR/
- ┣ 📂 gujarati_phase2_model/    # Stage 2 Domain Adaptation Model Checkpoints
+ ┣ 📂 gujarati_phase2_model/
  ┣ 📂 notebooks/
- ┃ ┣ 📜 Phase1 Training.ipynb   # Baseline evaluation & initial structural fine-tuning
- ┃ ┗ 📜 Phase 2 Training.ipynb  # Stage 2 Domain Adaptation (Kathbath dataset)
- ┣ 📜 app.py                    # Main pipeline deployment & Gradio Web Interface
- ┣ 📜 generate_dataset.py       # Data collation and preprocessing routines
- ┣ 📜 test_fleurs.py            # Evaluation logic on FLEURS datasets
- ┣ 📜 test_kathbath.py          # Domain-specific testing on the Kathbath dataset
- ┣ 📜 test_wer.py               # Calculation routines for plotting Word Error Rate metrics
- ┣ 📜 test_with_smruti.py       # Standalone scripts testing grammar/linguistic correction
- ┣ 📜 requirements.txt          # Minimal Python dependencies for inference
- ┗ 📜 README.md                 # Project Documentation
-
-## 🧠 Model Hosting
-The final, fully fine-tuned acoustic model weights are approximately 2.7 GB. Due to GitHub's file size limits, these weights are not stored in this repository.
-
-Instead, we have made the model publicly accessible and permanently hosted on the Hugging Face Hub. Our deployment script, app.py, is pre-configured to automatically pull and cache these exact model weights from Hugging Face during its first run using the Hugging Face pipeline function.
-
-🔗 [Click here to view, download, or test the Model on Hugging Face](https://huggingface.co/rudrakalariya/Gujarati-ASR)
-
-### Downloading the Model Manually
-If you prefer to download the model weights manually from Hugging Face rather than letting `app.py` handle it, use the Hugging Face CLI:
-
-1. **Install the Hugging Face Hub CLI:**
-   ```bash
-   pip install -U "huggingface_hub[cli]"
-   ```
-2. **Download the model to a local directory** (e.g., `gujarati_phase2_model/`):
-   ```bash
-   huggingface-cli download rudrakalariya/Gujarati-ASR --local-dir gujarati_phase2_model/
-   ```
+ ┣ 📜 app.py
+ ┣ 📜 requirements.txt
+ ┗ 📜 README.md
+```
 
 ---
 
-## 💻 How to Run / Installation
-You can easily get this ASR pipeline up and running locally to test audio files or speak directly through your microphone.
+## 🧠 Model Hosting
 
-### 1. Clone the Repository
+The trained model (~2.7GB) is hosted on Hugging Face:
+
+🔗 https://huggingface.co/rudrakalariya/Gujarati-ASR
+
+---
+
+## 💻 Installation & Setup
+
+### 1️⃣ Clone Repository
 ```bash
 git clone https://github.com/rudrakalariya/Gujarati-ASR.git
 cd Gujarati-ASR
 ```
 
-### 2. Install Dependencies
-Make sure you have Python installed, then install the required inference packages. (Make sure PyTorch is installed based on your environment).
+---
 
+### 2️⃣ Create Virtual Environment
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+---
+
+### 3️⃣ Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Launch the Application
-Run the main web interface file. The system will handle downloading the Hugging Face model and initializing the post-processing engine.
+---
 
+### 4️⃣ Download Model from Hugging Face
+```bash
+pip install -U "huggingface_hub[cli]"
+huggingface-cli download rudrakalariya/Gujarati-ASR --local-dir gujarati_phase2_model/
+```
+
+---
+
+### 5️⃣ Run the Application
 ```bash
 python app.py
 ```
 
-Once the model weights are fully loaded, your terminal will provide a local address (usually `http://127.0.0.1:7860`). Open that URL in your browser to start transcribing!
+---
+
+## 🌐 Usage
+
+- Open browser at: `http://127.0.0.1:7860`
+- Upload or record Gujarati audio
+- Get clean Gujarati transcription instantly
+
+---
+
+## ✨ Features
+
+- 🎤 Microphone + File Upload
+- 🤖 Custom Gujarati ASR Model
+- 🧹 Indic NLP Text Cleaning
+- ⚡ Chunked Processing (handles long audio)
+- 🌐 Simple Gradio UI
+
+---
+
+## 📌 Notes
+
+- First run may take time (model loading)
+- CPU mode supported (GPU optional)
+- Ensure model folder exists (`gujarati_phase2_model/`)
+
+---
+
+## 🚀 Future Improvements
+
+- Real-time streaming transcription
+- Gujarati → English translation
+- Mobile app integration
+- Faster inference optimization
+
+---
+
+## 🤝 Contribution
+
+👨‍💻 Developed by:
+
+- **[Rudra Kalariya](https://github.com/rudrakalariya)**
+- **[Kalpesh Gangani](https://github.com/kalpeshgangani16)**
+- **[Preya Dhangar](https://github.com/Itz-preya)**
+
+Feel free to contribute, open issues, or suggest improvements!
+
+## 📜 License
+
+This project is for educational and research purposes.
