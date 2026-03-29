@@ -47,6 +47,8 @@ Our two-stage approach prominently enhances the overall transcription quality. B
 
 To maintain a clean codebase for deployment, all experimental and training notebooks are located in a dedicated `notebooks/` folder.
 
+---
+
 ## 📂 Project Structure
 
 ```
