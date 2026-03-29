@@ -70,12 +70,16 @@ Gujarati-ASR/
 └── README.md                    # Project documentation
 ```
 
+---
+
 ## 🧠 Model Hosting
 The final, fully fine-tuned acoustic model weights are approximately 2.7 GB. Due to GitHub's file size limits, these weights are not stored in this repository.
 
 Instead, we have made the model publicly accessible and permanently hosted on the Hugging Face Hub. Our deployment script, app.py, is pre-configured to automatically pull and cache these exact model weights from Hugging Face during its first run using the Hugging Face pipeline function.
 
 🔗 [Click here to view, download, or test the Model on Hugging Face](https://huggingface.co/rudrakalariya/Gujarati-ASR)
+
+---
 
 ## 💻 Installation & Setup
 
