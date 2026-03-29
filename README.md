@@ -76,9 +76,9 @@ If you prefer to download the model weights manually from Hugging Face rather th
    ```bash
    pip install -U "huggingface_hub[cli]"
    ```
-2. **Download the model to a local directory** (e.g., `gujarati_final_model/`):
+2. **Download the model to a local directory** (e.g., `gujarati_phase2_model/`):
    ```bash
-   huggingface-cli download rudrakalariya/Gujarati-ASR --local-dir gujarati_final_model/
+   huggingface-cli download rudrakalariya/Gujarati-ASR --local-dir gujarati_phase2_model/
    ```
 
 ---
