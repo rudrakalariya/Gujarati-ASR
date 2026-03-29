@@ -49,6 +49,7 @@ To maintain a clean codebase for deployment, all experimental and training noteb
 
 ```text
 📦 Gujarati-ASR/
+ ┣ 📂 gujarati_phase2_model/    # Stage 2 Domain Adaptation Model Checkpoints
  ┣ 📂 notebooks/
  ┃ ┣ 📜 Phase1 Training.ipynb   # Baseline evaluation & initial structural fine-tuning
  ┃ ┗ 📜 Phase 2 Training.ipynb  # Stage 2 Domain Adaptation (Kathbath dataset)
@@ -69,44 +70,40 @@ Instead, we have made the model publicly accessible and permanently hosted on th
 🔗 [Click here to view, download, or test the Model on Hugging Face](https://huggingface.co/rudrakalariya/Gujarati-ASR)
 
 ### Downloading the Model Manually
-If you prefer to download the model weights manually from Hugging Face, follow these steps:
+If you prefer to download the model weights manually from Hugging Face rather than letting `app.py` handle it, use the Hugging Face CLI:
 
-**Method 1: Using Hugging Face CLI (Recommended)**
-1. Install the Hugging Face Hub CLI:
+1. **Install the Hugging Face Hub CLI:**
    ```bash
    pip install -U "huggingface_hub[cli]"
    ```
-2. Download the model to a local directory (e.g., `model/`):
+2. **Download the model to a local directory** (e.g., `gujarati_final_model/`):
    ```bash
-   huggingface-cli download https://huggingface.co/rudrakalariya/Gujarati-ASR --local-dir model/
+   huggingface-cli download rudrakalariya/Gujarati-ASR --local-dir gujarati_final_model/
    ```
 
-**Method 2: Using Git LFS**
-1. Ensure you have Git Large File Storage (LFS) installed:
-   ```bash
-   git lfs install
-   ```
-2. Clone the model repository directly:
-   ```bash
-   git clone https://huggingface.co/https://huggingface.co/rudrakalariya/Gujarati-ASR
-   ```
+---
 
-
-💻 How to Run / Installation
+## 💻 How to Run / Installation
 You can easily get this ASR pipeline up and running locally to test audio files or speak directly through your microphone.
 
-1. Clone the Repository
-bash
+### 1. Clone the Repository
+```bash
 git clone https://github.com/rudrakalariya/Gujarati-ASR.git
 cd Gujarati-ASR
-2. Install Dependencies
+```
+
+### 2. Install Dependencies
 Make sure you have Python installed, then install the required inference packages. (Make sure PyTorch is installed based on your environment).
 
-bash
+```bash
 pip install -r requirements.txt
-3. Launch the Application
+```
+
+### 3. Launch the Application
 Run the main web interface file. The system will handle downloading the Hugging Face model and initializing the post-processing engine.
 
-bash
+```bash
 python app.py
-Once the model weights are fully loaded, your terminal will provide a local address (usually http://127.0.0.1:7860). Open that URL in your browser to start transcribing!
+```
+
+Once the model weights are fully loaded, your terminal will provide a local address (usually `http://127.0.0.1:7860`). Open that URL in your browser to start transcribing!
