@@ -8,68 +8,74 @@
 
 </div>
 
----
+## 📖 Abstract / Introduction
+Welcome to the Custom Two-Stage Automatic Speech Recognition (ASR) Pipeline exclusively fine-tuned for the **Gujarati language**. 
 
-## 📖 Introduction
-This project is a **Custom Two-Stage Automatic Speech Recognition (ASR) Pipeline** designed specifically for the **Gujarati language**.
+Transcribing Gujarati presents unique challenges, including handling complex phonetic overlapping, messy Unicode rendering, and disconnected language matras. This project solves these challenges using a powerful hybrid architecture:
+1. **Acoustic Base:** A Whisper-Small model fine-tuned on the *Kathbath dataset* to recognize domain-specific Gujarati speech.
+2. **Linguistic Post-Processing:** Integration of the Smruti API / IndicNLP for grammar correction and robust text normalization.
 
-Gujarati ASR is challenging due to:
-- Complex phonetics
-- Unicode inconsistencies
-- Matra (vowel sign) attachment issues
-
-This pipeline solves these problems using:
-1. 🎧 **Fine-tuned Whisper Model** (Acoustic Understanding)
-2. 🧹 **IndicNLP Normalization** (Text Cleaning & Structuring)
+Whether you're dealing with noisy environments or complex sentence structures, this pipeline produces highly accurate transcriptions while ensuring text is grammatically structured and uniformly represented.
 
 ---
 
 ## 🏗️ Architecture
+Our pipeline systematically processes audio and text across two distinct stages:
 
-### 🔹 Stage 1: Acoustic Model
-- Whisper-based ASR (fine-tuned)
-- Auto 16kHz audio resampling
-- Chunking (30s with overlap)
-- Handles long audio efficiently
+### Stage 1: The Acoustic Model
+Built upon Hugging Face's `pipeline`, our architecture inherently leverages smart pre-processing features:
+* **Auto-16kHz Resampling:** The system intelligently forces any incoming microphone/uploaded audio to 16kHz, completely preventing the notorious "alien noise" transcription distortion.
+* **30-Second Chunking with Overlap:** Solves major memory bottlenecks. We cut long audio inputs into safe 30s chunks with a 5-second overlapping stride, guaranteeing that words are never split awkwardly during transcription transitions.
 
-### 🔹 Stage 2: Gujarati Text Normalization
-- Uses Indic NLP
-- Fixes Unicode issues
-- Corrects matra placement
-- Produces clean Gujarati text
+### Stage 2: The Gujarati Text Gate (Post-Processing)
+Once the raw transcribed text is generated, it passes through our linguistic normalization gateway. By integrating IndicNLP rules, the system repairs messy Unicode sequences effectively, ensuring all dependent characters/matras attach properly to their base consonants.
 
 ---
 
-## 🚀 Performance
+## 🚀 Results & Performance
+Our two-stage approach prominently enhances the overall transcription quality. Below are the definitive Word Error Rates (WER):
 
-| Model Stage | WER |
-|------------|-----|
-| Baseline Whisper | 36% |
-| Fine-tuned Model | 27% |
-| Final Pipeline | **16% 🎉** |
+| Model Stage / Configuration | Word Error Rate (WER) |
+| :--- | :---: |
+| **Baseline** *(Direct Whisper-Small Model)* | `36.0%` |
+| **Stage 1 & 2 Fine-Tuned Model** *(Domain Adaptation on Kathbath Dataset)* | `27.0%` |
+| **Final Hybrid Pipeline** *(Model + Linguistic Post-Processing)* | **`16.0%`** 🎉 |
 
 ---
+
+## 📂 Directory Structure
+
+To maintain a clean codebase for deployment, all experimental and training notebooks are located in a dedicated `notebooks/` folder.
 
 ## 📂 Project Structure
 
-```text
-📦 Gujarati-ASR/
- ┣ 📂 gujarati_phase2_model/
- ┣ 📂 notebooks/
- ┣ 📜 app.py
- ┣ 📜 requirements.txt
- ┗ 📜 README.md
+```
+Gujarati-ASR/
+│
+├── gujarati_phase2_model/        # Fine-tuned ASR model (Stage 2 checkpoints)
+│
+├── notebooks/                   # Training & experimentation notebooks
+│   ├── Phase1_Training.ipynb    # Baseline model training & evaluation
+│   └── Phase2_Training.ipynb    # Domain adaptation (Kathbath dataset)
+│
+├── app.py                       # Main application (Gradio UI + ASR pipeline)
+├── generate_dataset.py          # Dataset preparation & preprocessing
+│
+├── test_fleurs.py               # Evaluation on FLEURS dataset
+├── test_kathbath.py             # Evaluation on Kathbath dataset
+├── test_wer.py                  # Word Error Rate (WER) calculation
+├── test_with_smruti.py          # Testing linguistic post-processing
+│
+├── requirements.txt             # Project dependencies
+└── README.md                    # Project documentation
 ```
 
----
-
 ## 🧠 Model Hosting
+The final, fully fine-tuned acoustic model weights are approximately 2.7 GB. Due to GitHub's file size limits, these weights are not stored in this repository.
 
-The trained model (~2.7GB) is hosted on Hugging Face:
+Instead, we have made the model publicly accessible and permanently hosted on the Hugging Face Hub. Our deployment script, app.py, is pre-configured to automatically pull and cache these exact model weights from Hugging Face during its first run using the Hugging Face pipeline function.
 
-🔗 https://huggingface.co/rudrakalariya/Gujarati-ASR
-
----
+🔗 [Click here to view, download, or test the Model on Hugging Face](https://huggingface.co/rudrakalariya/Gujarati-ASR)
 
 ## 💻 Installation & Setup
 
@@ -110,52 +116,3 @@ python app.py
 ```
 
 ---
-
-## 🌐 Usage
-
-- Open browser at: `http://127.0.0.1:7860`
-- Upload or record Gujarati audio
-- Get clean Gujarati transcription instantly
-
----
-
-## ✨ Features
-
-- 🎤 Microphone + File Upload
-- 🤖 Custom Gujarati ASR Model
-- 🧹 Indic NLP Text Cleaning
-- ⚡ Chunked Processing (handles long audio)
-- 🌐 Simple Gradio UI
-
----
-
-## 📌 Notes
-
-- First run may take time (model loading)
-- CPU mode supported (GPU optional)
-- Ensure model folder exists (`gujarati_phase2_model/`)
-
----
-
-## 🚀 Future Improvements
-
-- Real-time streaming transcription
-- Gujarati → English translation
-- Mobile app integration
-- Faster inference optimization
-
----
-
-## 🤝 Contribution
-
-👨‍💻 Developed by:
-
-- **[Rudra Kalariya](https://github.com/rudrakalariya)**
-- **[Kalpesh Gangani](https://github.com/kalpeshgangani16)**
-- **[Preya Dhangar](https://github.com/Itz-preya)**
-
-Feel free to contribute, open issues, or suggest improvements!
-
-## 📜 License
-
-This project is for educational and research purposes.
